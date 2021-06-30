@@ -2,8 +2,7 @@ import Link from 'next/link'
 import styles from '../styles/Home.module.scss'
 
 
-const BLOG_URL = 'https://backend-ghostcms.herokuapp.com/'
-const CONTENT_API_KEY = '089ace9d554c78a5f078c690ce'
+const {BLOG_URL, CONTENT_API_KEY} = process.env
 
 type Post = {
   title: string;
