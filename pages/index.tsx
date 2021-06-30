@@ -1,19 +1,22 @@
-
+import Link from 'next/link'
 import styles from '../styles/Home.module.scss'
+
 
 const BLOG_URL = 'https://backend-ghostcms.herokuapp.com/'
 const CONTENT_API_KEY = '089ace9d554c78a5f078c690ce'
 
 type Post = {
-
+  title: string;
+  slug: string;
 }
 
 async function getPosts() {
-  const res = await fetch(`${BLOG_URL}/ghost/api/v3/content/posts/?key=${CONTENT_API_KEY}`).then((res) => res.json())
+  const res = await fetch(`${BLOG_URL}/ghost/api/v3/content/posts/?key=${CONTENT_API_KEY}&fields=title,slug,custom_excerpt`).then((res) => res.json())
 
-  const titles = res.posts.map((post) => post.title);
+  console.log(res);
+  const posts = res.posts
 
-  return titles
+  return posts
 
 }
 
@@ -27,7 +30,7 @@ export const getStaticProps = async ({ params }) => {
 }
 
 
-const Home: React.FC<{ posts: string[] }> = (props) => {
+const Home: React.FC<{ posts: Post[] }> = (props) => {
 
   const {posts} = props
   return (
@@ -35,7 +38,7 @@ const Home: React.FC<{ posts: string[] }> = (props) => {
       <h1>Hello to my blog</h1>
       <ul>
         {posts.map((post, index) => {
-          return <li key={index}>{post}</li>
+          return <li key={post.slug}><Link href="/post/[slug]" as={`/post/${post.slug}`}><a>{post.title}</a></Link></li>
         })}
       </ul>
     </div>
